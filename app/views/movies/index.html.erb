@@ -1,0 +1,9 @@
+<h1>MovieBox - All Movies</h1>
+
+<ul>
+  <% @movies.each do |movie| %>
+    <li>
+      <%= link_to movie.title, movie %>
+    </li>
+  <% end %>
+</ul>

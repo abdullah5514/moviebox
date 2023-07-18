@@ -1,0 +1,46 @@
+<h1><%= @movie.title %></h1>
+<p><strong>Release Date:</strong> <%= @movie.release_date %></p>
+<p><strong>Description:</strong> <%= @movie.description %></p>
+
+<h2>Comments</h2>
+<ul>
+  <% @movie.comments.each do |comment| %>
+    <li><%= comment.content %></li>
+  <% end %>
+</ul>
+
+<%= form_with(model: [@movie, Comment.new], url: movie_comments_path(@movie)) do |form| %>
+  <div>
+    <%= form.label :content %>
+    <%= form.text_area :content %>
+  </div>
+
+  <%= form.submit 'Add Comment' %>
+<% end %>
+
+<h2>Reviews</h2>
+<ul>
+  <% @movie.reviews.each do |review| %>
+    <li>
+      Rating: <%= review.rating %> / 5
+      <br>
+      <%= review.content %>
+    </li>
+  <% end %>
+</ul>
+
+<%= form_with(model: [@movie, Review.new], url: movie_reviews_path(@movie)) do |form| %>
+  <div>
+    <%= form.label :rating %>
+    <%= form.number_field :rating, in: 1..5 %>
+  </div>
+
+  <div>
+    <%= form.label :content %>
+    <%= form.text_area :content %>
+  </div>
+
+  <%= form.submit 'Add Review' %>
+<% end %>
+
+<%= link_to 'Back', movies_path %>
