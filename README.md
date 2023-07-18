@@ -34,16 +34,7 @@ cd moviebox
 
 Build the Docker image: 
 
-bashCopy code 
-
-docker build -t moviebox . 
- 
-
-Run the Docker container: 
-
-bashCopy code 
-
-docker run -p 3000:3000 -v "$PWD":/usr/src/app -w /usr/src/app --env-file .env moviebox 
+docker-compose up -d && docker-compose run rails rails db:create && docker-compose run rails rails db:migrate && docker-compose run rails rails db:seed
  
 
 Access the application: 
