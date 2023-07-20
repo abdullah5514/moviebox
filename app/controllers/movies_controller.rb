@@ -22,6 +22,7 @@ class MoviesController < ApplicationController
 
   def new
     @movie = Movie.new
+    render :search
   end
 
   def create
@@ -32,6 +33,28 @@ class MoviesController < ApplicationController
     else
       render :new
     end
+  end
+
+  def load_response_result(response_without_filter)
+    response = response_without_filter.to_h[:items]
+    response.map do |item|
+      snippet = item[:snippet]
+      {
+        kind: item[:kind],
+        video_id: item[:id],
+        channel_id: snippet[:channel_id],
+        channel_title: snippet[:channel_title],
+        description: snippet[:description],
+        created_at: snippet[:published_at],
+        thumbnail_url: snippet.dig(:thumbnails, :default, :url)
+      }
+    end
+  end
+
+  def search
+    response = YoutubeApi.new(params).search_api
+    @search_results= load_response_result(response)
+    # render json: @search_results
   end
 
   def edit

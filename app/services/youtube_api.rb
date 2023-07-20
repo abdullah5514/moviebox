@@ -1,5 +1,6 @@
 class YoutubeApi
-    include YoutubeAuthentication
+    require 'google/apis/youtube_v3'
+
     attr_reader :youtube_env, :youtube
 
     def initialize(params)
@@ -15,8 +16,8 @@ class YoutubeApi
     private
 
     def search_api_response
-      search_query = @params[:search]
-      max_results = 20
+      search_query = @params[:search_term]
+      max_results = 1
       youtube.key = 'AIzaSyBOFBRGlgWZ4Fimr-fzGkGieCYYNCzMR9o'
       youtube.list_searches('snippet', q: search_query, max_results: max_results)
     rescue StandardError => e
