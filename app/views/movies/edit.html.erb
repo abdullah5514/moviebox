@@ -1,22 +1,36 @@
-<h1>Edit Movie</h1>
+<div class="container">
+  <h1 class="mb-4">Edit Movie</h1>
 
-<%= form_with(model: @movie, url: movie_path(@movie), method: :patch) do |form| %>
-  <div>
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
+  <%= form_with(model: @movie, url: movie_path(@movie), method: :patch, html: { class: 'row g-3', multipart: true }) do |form| %>
+    <div class="col-md-6">
+      <%= form.label :title, class: 'form-label' %>
+      <%= form.text_field :title, class: 'form-control' %>
+    </div>
 
-  <div>
-    <%= form.label :release_date %>
-    <%= form.date_field :release_date %>
-  </div>
+    <!-- Image Upload -->
+    <div class="col-md-6">
+      <%= form.label :poster, class: 'form-label' %>
+      <%= form.file_field :poster, class: 'form-control' %>
+    </div>
 
-  <div>
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
+    <div class="col-12">
+      <%= form.label :poster_url, class: 'form-label' %>
+      <%= form.text_field :poster_url, class: 'form-control' %>
+    </div>
 
-  <%= form.submit 'Update Movie' %>
-<% end %>
+    <div class="col-12">
+      <%= form.label :release_date, class: 'form-label' %>
+      <%= form.date_field :release_date, class: 'form-control' %>
+    </div>
 
-<%= link_to 'Back', movies_path %>
+    <div class="col-12">
+      <%= form.label :description, class: 'form-label' %>
+      <%= form.text_area :description, class: 'form-control' %>
+    </div>
+
+    <div class="col-12 text-center"> <!-- Center align the buttons -->
+      <%= form.submit 'Update Movie', class: 'btn btn-primary mr-2' %>
+      <%= link_to 'Back', movies_path, class: 'btn btn-secondary' %>
+    </div>
+  <% end %>
+</div>
