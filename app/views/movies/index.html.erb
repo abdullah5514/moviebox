@@ -1,9 +1,12 @@
-<h1>MovieBox - All Movies</h1>
-
-<ul>
+<div class="card-deck">
   <% @movies.each do |movie| %>
-    <li>
-      <%= link_to movie.title, movie %>
-    </li>
+    <div class="card mb-4 shadow">
+      <img src="<%= movie.poster_url %>" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title"><%= movie.title %></h5>
+        <p class="card-text"><%= movie.description %></p>
+        <p class="card-text"><small class="text-muted"><%= movie.release_date %></small></p>
+      </div>
+    </div>
   <% end %>
-</ul>
+</div>
