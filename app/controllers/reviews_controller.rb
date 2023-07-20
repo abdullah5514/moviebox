@@ -4,7 +4,8 @@ class ReviewsController < ApplicationController
   def create
     @review = @movie.reviews.new(review_params)
     if @review.save
-      redirect_to @movie, notice: 'Review was successfully added.'
+      # redirect_to @movie, notice: 'Review was successfully added.'
+      redirect_back(fallback_location: @movie)
     else
       render 'movies/show'
     end

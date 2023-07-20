@@ -1,6 +1,9 @@
 class MoviesController < ApplicationController
   def index
-    @movies = Movie.all
+    # @movies = Movie.all
+    # @movies = Movie.paginate(page: params[:page], per_page: 10)
+    # @movies = Movie.search(params[:search]).paginate(page: params[:page], per_page: 10)
+    @movies = Movie.order(params[:sort]).paginate(page: params[:page], per_page: 10)
   end
 
   def show
@@ -31,6 +34,12 @@ class MoviesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @movie = Movie.find(params[:id])
+    @movie.destroy
+    redirect_to movies_path, notice: 'Movie was successfully deleted.'
   end
 
   private
