@@ -7,8 +7,6 @@ class MoviesController < ApplicationController
     @movies = Movie.all
     api_key ='eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MzRiMGQzNTgyMmQyMjJlNWM3ZWNjMTE1ZTczZjU4OCIsInN1YiI6IjY0YjgwMWQ0ZmRjMTQ2MDBlM2Q4NmZjMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._YD0ZuYshtI2rf0aqzzUB66WJJY_qyM-zlDZmb_Ggh8' # Replace with your actual API key
     movie_service = MovieService.new(api_key).discover_movies
-    
-    puts('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
     puts movie_service
     # @movies = movie_service.discover_movies
     # rescue StandardError => e
