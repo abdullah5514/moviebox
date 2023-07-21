@@ -11,7 +11,8 @@
           <h5 class="card-title"><%= movie['title'] %></h5>
           <p class="card-text"><%= movie['overview'] %></p>
           <p class="card-text"><small class="text-muted"><%= movie['release_date'] %></small></p>
-          <a href="<%= new_movie_path(params: movie) %>" class="btn btn-success">Add to MovieBox</a>
+           <a href="#{<%= new_movie_path(params: movie) %>}" class="btn btn-success">Add to MovieBox</a>
+          
 
         </div>
       </div>
@@ -35,7 +36,9 @@
       <h1>Movies from MovieBox</h1>
     </div>
     <div class="col-md-6 d-flex align-items-center justify-content-end">
-      <a href="<%= new_movie_path %>" class="btn btn-success">Create New Movie</a>
+     <% if can? :new, @movie %>
+      <a href="#{<%= new_movie_path %>}" class="btn btn-success">Create New Movie</a>
+    <% end %>
     </div>
   </div>
 </div>
