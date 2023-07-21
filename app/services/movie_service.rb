@@ -3,8 +3,8 @@ class MovieService
     include HTTParty
     base_uri 'https://api.themoviedb.org/3'
   
-    def initialize(api_key)
-      @api_key = api_key
+    def initialize
+      @api_key = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MzRiMGQzNTgyMmQyMjJlNWM3ZWNjMTE1ZTczZjU4OCIsInN1YiI6IjY0YjgwMWQ0ZmRjMTQ2MDBlM2Q4NmZjMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._YD0ZuYshtI2rf0aqzzUB66WJJY_qyM-zlDZmb_Ggh8'
     end
   
     def discover_movies

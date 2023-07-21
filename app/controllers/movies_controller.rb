@@ -1,33 +1,24 @@
 class MoviesController < ApplicationController
   def index
-    # @movies = Movie.all
-    # @movies = Movie.paginate(page: params[:page], per_page: 10)
-    # @movies = Movie.search(params[:search]).paginate(page: params[:page], per_page: 10)
-    @movies = Movie.order(params[:sort]).paginate(page: params[:page], per_page: 10)
     @movies = Movie.all
-    api_key ='eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MzRiMGQzNTgyMmQyMjJlNWM3ZWNjMTE1ZTczZjU4OCIsInN1YiI6IjY0YjgwMWQ0ZmRjMTQ2MDBlM2Q4NmZjMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._YD0ZuYshtI2rf0aqzzUB66WJJY_qyM-zlDZmb_Ggh8' # Replace with your actual API key
-    @tmdb_movies = MovieService.new(api_key).discover_movies
-    # puts movie_service
-    # @movies = movie_service.discover_movies
-    # rescue StandardError => e
-    #   flash[:alert] = "Error fetching movies: #{e.message}"
-    #   @movies = [] # Handle the error case by showing an empty array of movies
-    # end 
+    @tmdb_movies = MovieService.new.discover_movies
   end
 
   def show
     @movie = Movie.find(params[:id])
-    
   end
 
   def new
-    @movie = Movie.new
+    if params.present?
+      @movie = Movie.new(tmdb_params)
+    else
+      @movie = Movie.new()
+    end
   end
 
   def create
-    puts(params)
     @movie = Movie.new(movie_params)
-    if @movie.save
+    if @movie.save!
       redirect_to @movie, notice: 'Movie was successfully created.'
     else
       render :new
@@ -56,6 +47,10 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-    params.require(:movie).permit(:title, :release_date, :description, :poster, :trailer)
+    params.require(:movie).permit(:title, :release_date, :description, :poster, :trailer, :poster_url, :tmdb_rating, :moviebox_rating)
+  end
+
+  def tmdb_params
+    {title: params[:title], description: params['overview'], release_date: params['release_date'], poster_url: "https://image.tmdb.org/t/p/w500/#{params['poster_path']}", tmdb_rating: params['vote_average']}
   end
 end

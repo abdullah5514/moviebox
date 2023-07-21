@@ -1,33 +1,3 @@
-<div class="container">
-  <div class="row justify-content-center">
-    <h1 class="mt-4">Movies from MovieBox</h1>
-  </div>
-  <!-- Create New Movie Button -->
-  <div class="row justify-content-center mt-4">
-    <a href="<%= new_movie_path %>" class="btn btn-success">Create New Movie</a>
-  </div>
-  <div class="card-deck mt-4">
-    <% @movies.each do |movie| %>
-      <div class="card mb-6 shadow">
-        <% if movie.poster.attached? %>
-          <img src="<%= url_for(movie.poster) %>" class="card-img-top" alt="...">
-        <% else %>
-          <img src="<%= url_for(movie.poster_url) %>" class="card-img-top" alt="...">
-        <% end %>
-        
-        <div class="card-body text-center"> <!-- Center align card content -->
-          <h5 class="card-title"><%= movie.title %></h5>
-          <p class="card-text"><%= movie.description %></p>
-          <p class="card-text"><small class="text-muted"><%= movie.release_date %></small></p>
-          <!-- Edit Button -->
-          <a href="<%= edit_movie_path(movie) %>" class="btn btn-primary mr-2">Edit</a>
-          <!-- Show Button -->
-          <a href="<%= movie_path(movie) %>" class="btn btn-info">Show</a>
-        </div>
-      </div>
-    <% end %>
-  </div>
-</div>
 
 <div class="container">
   <div class="row justify-content-center">
@@ -56,4 +26,40 @@
     <li class="page-item"><a class="page-link" href="#">Next</a></li>
   </ul>
 </nav>
+</div>
+
+<div class="container">
+  <div class="container">
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-6 d-flex align-items-center justify-content-start">
+      <h1>Movies from MovieBox</h1>
+    </div>
+    <div class="col-md-6 d-flex align-items-center justify-content-end">
+      <a href="<%= new_movie_path %>" class="btn btn-success">Create New Movie</a>
+    </div>
+  </div>
+</div>
+  <!-- Create New Movie Button -->
+
+  <div class="card-deck mt-4">
+    <% @movies.each do |movie| %>
+      <div class="card mb-6 shadow">
+        <% if movie.poster.attached? %>
+          <img src="<%= url_for(movie.poster) %>" class="card-img-top" alt="...">
+        <% else %>
+          <img src="<%= url_for(movie.poster_url) %>" class="card-img-top" alt="...">
+        <% end %>
+        
+        <div class="card-body text-center"> <!-- Center align card content -->
+          <h5 class="card-title"><%= movie.title %></h5>
+          <p class="card-text"><%= movie.description %></p>
+          <p class="card-text"><small class="text-muted"><%= movie.release_date %></small></p>
+          <!-- Edit Button -->
+          <a href="<%= edit_movie_path(movie) %>" class="btn btn-primary mr-2">Edit</a>
+          <!-- Show Button -->
+          <a href="<%= movie_path(movie) %>" class="btn btn-info">Show</a>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

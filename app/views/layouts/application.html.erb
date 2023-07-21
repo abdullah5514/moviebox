@@ -6,19 +6,38 @@
   <%= csp_meta_tag %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style>
+    /* Set a minimum height for the main container to prevent the footer from moving */
+    body {
+      min-height: calc(100vh - 110px); /* Adjust as needed based on your footer height */
+    }
+
+    /* Style the navigation links */
+    .navbar-nav li {
+      margin-right: 10px;
+      list-style: none;
+      display: inline-block;
+    }
+
+    .navbar-nav li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .navbar-nav li a:hover {
+      color: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
   <header class="navbar navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">MovieBox</a>
-    </div>
-    <nav class="navbar">
-      <ul class="navbar-nav">
-        <li class="nav-item"><%= link_to 'Home', root_path %></li>
-        <!-- Add more navigation items as needed -->
-      </ul>
-    </nav>
-  </header>
+  <div class="container d-flex justify-content-center align-items-center">
+    <a class="navbar-brand" href=<%= root_path %>>
+      <span style="font-size: 40px; font-weight: bold; color: mediumaquamarine">MovieBox</span>
+    </a>
+  </div>
+</header>
 
   <main class="container mt-4">
     <%= yield %>
