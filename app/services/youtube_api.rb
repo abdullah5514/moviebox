@@ -6,7 +6,7 @@ class YoutubeApi
     def initialize(params)
       @youtube_env = Rails.application.credentials.try(:youtube)
       @youtube = Google::Apis::YoutubeV3::YouTubeService.new
-      @params = params
+      @query = params
     end
 
     def search_api
@@ -16,10 +16,9 @@ class YoutubeApi
     private
 
     def search_api_response
-      search_query = @params[:search_term]
-      max_results = 1
+      max_results = 10
       youtube.key = 'AIzaSyBOFBRGlgWZ4Fimr-fzGkGieCYYNCzMR9o'
-      youtube.list_searches('snippet', q: search_query, max_results: max_results)
+      youtube.list_searches('snippet', q: @query, max_results: max_results)
     rescue StandardError => e
       error_handling(e)
     end

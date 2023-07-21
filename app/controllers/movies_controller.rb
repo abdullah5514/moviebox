@@ -18,7 +18,7 @@ class MoviesController < ApplicationController
 
   def create
     @movie = Movie.new(movie_params)
-    if @movie.save!
+    if @movie.save
       redirect_to @movie, notice: 'Movie was successfully created.'
     else
       render :new
@@ -36,15 +36,14 @@ class MoviesController < ApplicationController
         channel_title: snippet[:channel_title],
         description: snippet[:description],
         created_at: snippet[:published_at],
-        thumbnail_url: snippet.dig(:thumbnails, :default, :url)
+        thumbnail_url: snippet.dig(:thumbnails, :high, :url)
       }
     end
   end
 
   def search
-    response = YoutubeApi.new(params).search_api
-    @search_results= load_response_result(response)
-    # render json: @search_results
+    response = YoutubeApi.new(params[:query]).search_api
+    render json: {related_movies: load_response_result(response)}
   end
 
   def edit
@@ -69,10 +68,10 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-    params.require(:movie).permit(:title, :release_date, :description, :poster, :trailer, :poster_url, :tmdb_rating, :moviebox_rating)
+    params.require(:movie).permit(:title, :release_date, :description, :poster, :trailer, :poster_url, :tmdb_rating, :moviebox_rating, :trailer_url)
   end
 
   def tmdb_params
-    {title: params[:title], description: params['overview'], release_date: params['release_date'], poster_url: "https://image.tmdb.org/t/p/w500/#{params['poster_path']}", tmdb_rating: params['vote_average']}
+    {title: params[:title], description: params['overview'], release_date: params['release_date'], poster_url: "https://image.tmdb.org/t/p/w500/#{params['poster_path']}", tmdb_rating: params['vote_average'], trailer_url: params[:trailer_url]}
   end
 end
