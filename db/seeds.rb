@@ -26,15 +26,19 @@ movies_data = [
   # { ... },
   # { ... }
 ]
-User.create(
+admin_user = User.create(
   email: 'john@example.com',
-  encrypted_password: 'hashed_password_1'
+  password: '12344567'
 )
 
-User.create(
+user =User.create(
   email: 'jane@example.com',
-  encrypted_password: 'hashed_password_2'
+  password: '1234567'
 )
+admin_role = Role.create(role_type: "admin")
+user_role  = Role.create(role_type: "user")
+admin_user.role << admin_role
+user.role << user_role
 
 # Create 15 movie objects
 15.times do |index|

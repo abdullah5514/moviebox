@@ -4,7 +4,9 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  enum type: { admin: 'admin', user: 'user'}
+  
   def admin?
-    self&.role&.first&.name == 'admin'
-  end
+    self&.role&.first&.type == 'admin'
+  end 
 end

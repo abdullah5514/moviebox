@@ -23,7 +23,7 @@ class Ability
     end
     #
     #   return unless user.present? 
-    #   can :read, :all
+      #   can :read, :all
     #   return unless user.admin?
     #   can :manage, :all
     #
