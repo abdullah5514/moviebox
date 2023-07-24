@@ -4,11 +4,11 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    byebug
     # Define abilities for the user here. For example:
     user ||= User.new # Guest user (not logged in)
   
-    if user.admin? 
+    if user&.admin? 
+      puts user&.admin?
       can :manage, :all
     else
       # Define abilities for non-admin users here
@@ -22,7 +22,7 @@ class Ability
       cannot :update, Movie
     end
     #
-    #   return unless user.present?
+    #   return unless user.present? 
     #   can :read, :all
     #   return unless user.admin?
     #   can :manage, :all

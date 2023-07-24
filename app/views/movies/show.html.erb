@@ -1,83 +1,87 @@
 <%= turbo_frame_tag 'form-frame' do %>
-<div class="row">
-  <div class="col-md-6">
-    <!-- Movie image -->
-    <% if @movie.poster.attached? %>
-      <img src="<%= url_for(@movie.poster) %> " class="img-fluid mb-4" alt="Movie Poster">
-    <% else %>
-      <img src="<%= url_for(@movie.poster_url) %> " class="img-fluid mb-4" alt="Movie Poster">
-    <% end %>
-  </div>
-  <div class="col-md-6">
-    <h1><%= @movie.title %></h1>
-    <!-- Movie release date -->
-    <p><strong>Release Date:</strong> <%= @movie.release_date %></p>
-    <!-- Movie description -->
-    <p><strong>Description:</strong> <%= @movie.description %></p>
-    <!-- Add comment form -->
-    <%= form_with(model: [@movie, Comment.new], url: movie_comments_path(@movie)) do |form| %>
-      <div class="form-group">
-        <%= form.label :content %>
-        <%= form.text_area :content, class: 'form-control' %>
-      </div>
-      <%= form.submit 'Add Comment', class: 'btn btn-primary' %>
-    <% end %>
-    <!-- Comments list -->
-    <h2 class="mt-4">Comments</h2>
-    <ul class="list-group">
-      <% @movie.comments.each do |comment| %>
-        <li class="list-group-item"><%= comment.content %></li>
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Movie image -->
+      <% if @movie.poster.attached? %>
+        <img src="<%= url_for(@movie.poster) %> " class="img-fluid mb-4 movie-poster" alt="Movie Poster">
+      <% else %>
+        <img src="<%= url_for(@movie.poster_url) %> " class="img-fluid mb-4 movie-poster" alt="Movie Poster">
       <% end %>
-    </ul>
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe
+          width="560"
+          height="315"
+          src=<%= @movie.trailer_url %>
+          title=<%= @movie.title %>
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+        </div>
 
-
-    <!-- Add Review form -->
-  <div class="container">
-  <%= form_with(model: [@movie, Review.new], url: movie_reviews_path(@movie)) do |form| %>
-    <div class="form-group border p-4">
-      <%= form.label :content %>
-      <%= form.text_area :content, class: 'form-control' %>
     </div>
-    <div class="form-group border p-4">
-      <label for="rating">Rating</label>
-      <div class="star-rating">
-        <% (1..5).each do |i| %>
-          <%= form.radio_button :rating, i, id: "star#{i}" %>
-          <label for="star<%= i %>" class="star">&#9733;</label>
+    <div class="col-md-6">
+      <h1><%= @movie.title %></h1>
+      <!-- Movie release date -->
+      <p><strong>Release Date:</strong> <%= @movie.release_date %></p>
+      <!-- Movie description -->
+      <p><strong>Description:</strong> <%= @movie.description %></p>
+      <!-- Add comment form -->
+      <%= form_with(model: [@movie, Comment.new], url: movie_comments_path(@movie)) do |form| %>
+        <div class="form-group">
+          <%= form.label :content %>
+          <%= form.text_area :content, class: 'form-control' %>
+        </div>
+        <%= form.submit 'Add Comment', class: 'btn btn-primary' %>
+      <% end %>
+      <!-- Comments list -->
+      <h2 class="mt-4">Comments</h2>
+      <ul class="list-group">
+        <% @movie.comments.each do |comment| %>
+          <li class="list-group-item"><%= comment.content %></li>
+        <% end %>
+      </ul>
+
+      <!-- Add Review form -->
+      <div class="container">
+        <%= form_with(model: [@movie, Review.new], url: movie_reviews_path(@movie)) do |form| %>
+          <div class="form-group border p-4">
+            <%= form.label :content %>
+            <%= form.text_area :content, class: 'form-control' %>
+          </div>
+          <div class="form-group border p-4">
+            <label for="rating">Rating</label>
+            <div class="star-rating">
+              <% (1..5).each do |i| %>
+                <%= form.radio_button :rating, i, id: "star#{i}" %>
+                <label for="star<%= i %>" class="star">&#9733;</label>
+              <% end %>
+            </div>
+          </div>
+          <%= form.submit 'Add Review', class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+
+      <div class="container">
+        <!-- Display movie details here -->
+        <h2 class="mt-4">Reviews</h2>
+        <% @movie.reviews.each do |review| %>
+          <div class="review">
+            <div class="rating">
+              <% (1..5).each do |i| %>
+                <% if i <= 3 %>
+                  <span class="star">&#9733;</span>
+                <% else %>
+                  <span class="star">&#9734;</span>
+                <% end %>
+              <% end %>
+            </div>
+            <p><%= review.content %></p>
+          </div>
         <% end %>
       </div>
     </div>
-    <%= form.submit 'Add Review', class: 'btn btn-primary' %>
-  <% end %>
-</div>
-
-    <div class="container">
-  <!-- Display movie details here -->
-      <h2 class="mt-4">Reviews</h2>
-      <% @movie.reviews.each do |review| %>
-        <div class="review">
-          <div class="rating">
-            <% (1..5).each do |i| %>
-              <% if i <= 3 %>
-                <span class="star">&#9733;</span>
-              <% else %>
-                <span class="star">&#9734;</span>
-              <% end %>
-            <% end %>
-          </div>
-          <p><%= review.content %></p>
-        </div>
-      <% end %>
-    </div>
   </div>
-</div>
-
-<div>
-  <% if @movie.trailer.attached? %>
-    <%= link_to "Play Trailer", url_for(@movie.trailer), class: "btn btn-primary" %>
-  <% else %>
-    <!-- Display a message indicating no trailer is available -->
-  <% end %>
 </div>
 <% end %>
 
