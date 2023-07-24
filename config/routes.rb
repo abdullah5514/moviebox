@@ -6,4 +6,5 @@ Rails.application.routes.draw do
     resources :comments, only: :create
     resources :reviews, only: :create
   end
+  get '*path', to: redirect('/')
 end
