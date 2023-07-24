@@ -12,7 +12,7 @@ end
 
 movies_data = [
   {
-    title: "New Day",
+    title: Faker::Movie.title,
     release_date: random_future_date,
     description: "ioj",
     created_at: Time.now - rand(1..30).days,
@@ -20,11 +20,21 @@ movies_data = [
     poster_url: "https://images.pexels.com/photos/2873486/pexels-photo-2873486.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     trailer_url: nil
   },
+ 
   # Add more movie data as needed
   # { ... },
   # { ... },
   # { ... }
 ]
+User.create(
+  email: 'john@example.com',
+  encrypted_password: 'hashed_password_1'
+)
+
+User.create(
+  email: 'jane@example.com',
+  encrypted_password: 'hashed_password_2'
+)
 
 # Create 15 movie objects
 15.times do |index|

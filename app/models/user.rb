@@ -5,6 +5,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   def admin?
-    self.role.first.name == 'admin'
+    self&.role&.first&.name == 'admin'
   end
 end
