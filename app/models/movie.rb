@@ -11,7 +11,6 @@ class Movie < ApplicationRecord
 
 
   validate :validate_poster_or_poster_url_presence
-
   private
 
   def validate_poster_or_poster_url_presence

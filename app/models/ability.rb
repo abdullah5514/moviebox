@@ -7,8 +7,7 @@ class Ability
     # Define abilities for the user here. For example:
     user ||= User.new # Guest user (not logged in)
   
-    if user&.admin? 
-      puts user&.admin?
+    if user.admin?
       can :manage, :all
     else
       # Define abilities for non-admin users here

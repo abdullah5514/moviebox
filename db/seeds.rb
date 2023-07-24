@@ -10,22 +10,6 @@ def random_future_date
   rand(1..365).days.from_now
 end
 
-movies_data = [
-  {
-    title: Faker::Movie.title,
-    release_date: random_future_date,
-    description: "ioj",
-    created_at: Time.now - rand(1..30).days,
-    updated_at: Time.now - rand(1..30).days,
-    poster_url: "https://images.pexels.com/photos/2873486/pexels-photo-2873486.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    trailer_url: nil
-  },
- 
-  # Add more movie data as needed
-  # { ... },
-  # { ... },
-  # { ... }
-]
 admin_user = User.create(
   email: 'john@example.com',
   password: '12344567'
@@ -42,5 +26,13 @@ user.role << user_role
 
 # Create 15 movie objects
 15.times do |index|
-  Movie.create!(movies_data[0])
+  Movie.create!({
+    title: Faker::Movie.unique.title,
+    release_date: random_future_date,
+    description: "ioj",
+    created_at: Time.now - rand(1..30).days,
+    updated_at: Time.now - rand(1..30).days,
+    poster_url: "https://images.pexels.com/photos/2873486/pexels-photo-2873486.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    trailer_url: nil
+  })
 end

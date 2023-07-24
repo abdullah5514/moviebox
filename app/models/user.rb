@@ -4,9 +4,9 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  enum type: { admin: 'admin', user: 'user'}
+  enum role_type: { admin: 'admin', user: 'user'}
   
   def admin?
-    self&.role&.first&.type == 'admin'
+    role.where(role_type: 'admin').present?
   end 
 end
