@@ -46,6 +46,10 @@ class MoviesController < ApplicationController
     render json: {related_movies: load_response_result(response)}
   end
 
+  def tmdb_show
+    @movie = Movie.new(tmdb_params)
+  end
+
   def edit
     @movie = Movie.find(params[:id])
   end

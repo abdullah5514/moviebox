@@ -45,10 +45,10 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-start">
                     <div class="d-flex flex-row align-items-center">
-                      <% if current_user.profile_picture.attached? %>
-                        <img class="rounded-circle shadow-1-strong" src=<%= url_for(current_user.profile_picture)%> alt="avatar" width="25" height="25"/>
+                      <% if comment.user.profile_picture.attached? %>
+                        <img class="rounded-circle shadow-1-strong" src=<%= url_for(comment.user.profile_picture)%> alt="avatar" width="25" height="25"/>
                       <% end %>
-                      <p class="small mb-0 ms-2 me-2"><%= current_user.name %></p>
+                      <p class="small mb-0 ms-2 me-2"><%= comment.user.name %></p>
                     </div>
                     <div class="d-flex flex-row align-items-center">
                       <p class="small text-muted mb-0"><%= comment.content %></p>
@@ -72,21 +72,22 @@
                   <ul class="rating mb-3 d-flex p-0">
                     <% (1..5).each do |i| %>
                       <label>
-                        <input type="radio" name="review[rating]" value=<%= i %> class="star-input visually-hidden ">
-                        <i class="star ms-2" data-rating=<%= i %> >&#9733;</i>
+                        <input type="radio" name="review[rating]" value=<%= i %> class="star-input visually-hidden">
+                        <i class="star ms-2" data-rating=<%= i ||= 1 %> >&#9733;</i>
+                        
                       </label>
                     <% end %>
                   </ul>
                   <div class="form-outline">
                     <label class="form-label" for="textAreaExample">What is your view?</label>
-                    <%= form.text_area :content, class: 'form-control', id: 'textAreaExample', rows: 4 %>
+                    <%= form.text_area :content, class: 'form-control', id: 'textAreaExample', rows: 2 %>
                   </div>
                   <div class="d-flex justify-content-end mt-3">
-                    <%= form.submit 'Submit', class: 'btn btn-primary mb-4 ' %>
+                    <%= form.submit 'Submit', class: 'btn btn-primary mb-4' %>
                   </div>
                 <% end %>
               </div>
-
+              
               
             </div>
 
@@ -94,14 +95,14 @@
         <div class="review">
           <div class="rating">
             <div class="d-flex flex-row align-items-center">
-                      <% if current_user.profile_picture.attached? %>
-                        <img class="rounded-circle shadow-1-strong" src=<%= url_for(current_user.profile_picture)%> alt="avatar" width="25" height="25"/>
+                      <% if review.user.profile_picture.attached? %>
+                        <img class="rounded-circle shadow-1-strong" src=<%= url_for(review.user.profile_picture)%> alt="avatar" width="25" height="25"/>
                       <% end %>
-                      <p class="small mb-0 ms-2 me-2"><%= current_user.name %></p>
+                      <p class="small mb-0 ms-2 me-2"><%= review.user.name %></p>
                     </div>
             <% (1..5).each do |i| %>
 
-              <% if i <= review.rating %>
+              <% if i <= review.rating ||= 1 %>
                 <span class="star highlighted">&#9733;</span>
               <% else %>
                 <span class="star">&#9734;</span>
@@ -129,7 +130,7 @@
 
   stars.forEach((star) => {
     star.addEventListener("click", function () {
-      const selectedRating = parseInt(star.dataset.rating);
+      const selectedRating = parseInt(star.dataset.rating) ;
 
       stars.forEach((star, index) => {
         if (index < selectedRating) {
@@ -139,6 +140,14 @@
         }
       });
     });
+  });
+
+  document.querySelector('form[data-controller="reviews"]').addEventListener("submit", function (event) {
+    const selectedRating = parseInt(document.querySelector('input[name="review[rating]"]:checked').value);
+    if (!selectedRating || selectedRating === 0) {
+      event.preventDefault(); // Prevent form submission
+      alert("Rating cannot be nil or zero. Please select a valid rating.");
+    }
   });
 </script>
 

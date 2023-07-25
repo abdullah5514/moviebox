@@ -131,7 +131,7 @@
       thumbnailItems.forEach((container) => {
         container.addEventListener("click", () => {
           const videoId = container.querySelector("img").getAttribute("data-video-id");
-        const videoTitle = container.querySelector("img").getAttribute("data-video-title");
+          const videoTitle = container.querySelector("img").getAttribute("data-video-title");
           playVideoInEmbeddedPlayer(videoId, videoTitle);
         });
       });

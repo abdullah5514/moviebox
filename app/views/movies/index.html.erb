@@ -5,12 +5,14 @@
   </div>
   <div class="card-deck mt-4">
     <% @tmdb_movies.each do |movie| %>
+     <a href="<%= tmdb_show_path(movie) %>" class="card-link">
       <div class="card mb-6 shadow">
-        <img src="<%= 'https://image.tmdb.org/t/p/w500/' + movie['poster_path'] %>" class="card-img-top" alt="...">
+        <img src="<%= 'https://image.tmdb.org/t/p/w500/' + movie['poster_path'] %>" class="card-img-top">
         <div class="card-body text-center"> <!-- Center align card content -->
           <h5 class="card-title"><%= movie['title'] %></h5>
           <p class="card-text"><%= movie['overview'] %></p>
           <p class="card-text"><small class="text-muted"><%= movie['release_date'] %></small></p>
+          <p class="card-text"><small class="text-muted">TMDB Rating: <%= movie['vote_average'] %></small></p>
           <% if can? :read, @movie %>
             <a href=<%= new_movie_path(params: movie) %> class="btn btn-success">Add to MovieBox</a>
           <% end %>
@@ -21,14 +23,14 @@
     <% end %>
   </div>
   <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-  </ul>
-</nav>
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+  </nav>
 </div>
 
 <div class="container">
@@ -48,25 +50,28 @@
 
   <div class="card-deck mt-4">
     <% @movies.each do |movie| %>
-      <div class="card mb-6 shadow">
-        <% if movie.poster.attached? %>
-          <img src="<%= url_for(movie.poster) %>" class="card-img-top" alt="...">
-        <% else %>
-          <img src="<%= url_for(movie.poster_url) %>" class="card-img-top" alt="...">
-        <% end %>
-        
-        <div class="card-body text-center"> <!-- Center align card content -->
-          <h5 class="card-title"><%= movie.title %></h5>
-          <p class="card-text"><%= movie.description %></p>
-          <p class="card-text"><small class="text-muted"><%= movie.release_date %></small></p>
-          <% if can? :new, @movie %>
-            <!-- Edit Button -->
-            <a href="<%= edit_movie_path(movie) %>" class="btn btn-primary mr-2">Edit</a>
-            <% end %>
-            <!-- Show Button -->
-            <a href=<%= movie_path(movie) %> class="btn btn-info">Show</a>
+      <a href=<%= movie_path(movie) %> class="card-link">
+        <div class="card mb-6 shadow">
+          <% if movie.poster.attached? %>
+            <img src="<%= url_for(movie.poster) %>" class="card-img-top" alt="...">
+          <% else %>
+            <img src="<%= url_for(movie.poster_url) %>" class="card-img-top" alt="...">
+          <% end %>
+          
+          <div class="card-body text-center"> <!-- Center align card content -->
+            <h5 class="card-title"><%= movie.title %></h5>
+            <p class="card-text"><%= movie.description %></p>
+            <p class="card-text"><small class="text-muted"><%= movie.release_date %></small></p>
+            <p class="card-text"><small class="text-muted">MovieBox Rating: <%= movie.moviebox_rating ||= 'Not Available' %></small></p>
+            <% if can? :new, @movie %>
+              <!-- Edit Button -->
+              <a href="<%= edit_movie_path(movie) %>" class="btn btn-primary mr-2">Edit</a>
+              <% end %>
+              <!-- Show Button -->
+              
+          </div>
         </div>
-      </div>
+        </a>
     <% end %>
   </div>
 </div>

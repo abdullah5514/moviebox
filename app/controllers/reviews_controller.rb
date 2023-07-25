@@ -5,7 +5,7 @@ class ReviewsController < ApplicationController
     @review = @movie.reviews.new(review_params)
     @review.user = current_user # Associate the review with the current user
 
-    if @review.save
+    if @review.save!
       redirect_back(fallback_location: @movie)
     else
       render 'movies/show'

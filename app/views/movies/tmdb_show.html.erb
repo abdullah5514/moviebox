@@ -1,0 +1,133 @@
+  <%= turbo_frame_tag 'form-frame' do %>
+    <div class="row">
+      <div class="col-md-6">
+        <!-- Movie image -->
+        <% if @movie.poster.attached? %>
+          <img src="<%= url_for(@movie.poster) %> " class="img-fluid mb-4 movie-poster" alt="Movie Poster">
+        <% else %>
+          <img src="<%= url_for(@movie.poster_url) %> " class="img-fluid mb-4 movie-poster" alt="Movie Poster">
+        <% end %>
+        <% if @movie.trailer_url.present? %>
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe
+            width="560"
+            height="315"
+            src=<%= @movie.trailer_url %>
+            title=<%= @movie.title %>
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-6">
+        <h1><%= @movie.title %></h1>
+        <!-- Movie release date -->
+        <p><strong>Release Date:</strong> <%= @movie.release_date %></p>
+        <!-- Movie description -->
+        <p><strong>Description:</strong> <%= @movie.description %></p>
+        <!-- Show comment -->
+        <p><strong>Rating on TMDB:</strong> <%= @movie.tmdb_rating || 0%></p>
+
+        <div id="youtube-player" class="mt-4"></div>
+
+      </div>
+    </div>
+    
+      
+  <div class="youtube-trailer-results mt-4 d-flex flex-nowrap overflow-auto">
+  </div> 
+  </div>
+  <% end %>
+
+  <div class="mt-4">
+    <h2>Related Videos</h2>
+    <div id="related-videos" class="mt-4 d-flex flex-nowrap overflow-auto">
+      <!-- Related videos will be appended here dynamically -->
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Function to fetch and display related videos using the movie title
+    const searchRelatedVideos = (movieTitle) => {
+      const url = '<%= search_movies_path %>';
+      const queryParams = new URLSearchParams({ query: movieTitle });
+      fetch(`${url}?${queryParams}`)
+        .then(response => response.json())
+        .then(data => {
+          // Process the data and display the related videos
+          const relatedVideosDiv = document.getElementById('related-videos');
+          relatedVideosDiv.innerHTML = ''; // Clear any existing content
+          data.related_movies.forEach((item) => {
+            const videoId = item.video_id.video_id;
+            const videoTitle = item.description;
+            const videoThumbnail = item.thumbnail_url;
+
+            const trailerItem = `
+              <div class="youtube-trailer-item">
+                <div class="video-placeholder">
+                  <img src="${videoThumbnail}" alt="${videoTitle}" class="img-fluid image_trailer" data-video-id="${videoId}" data-video-title="${videoTitle}">
+                  <div class="play-button-container">
+                    <svg class="play-button-svg" viewBox="0 0 64 64">
+                      <polygon points="22,17 22,47 48,32"></polygon>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            `;
+
+            relatedVideosDiv.insertAdjacentHTML("beforeend", trailerItem);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching related videos:', error);
+        });
+
+
+      const thumbnailItems = document.querySelectorAll("#related-videos");
+      thumbnailItems.forEach((container) => {
+        container.addEventListener("click", () => {
+          const videoId = container.querySelector("img").getAttribute("data-video-id");
+          const videoTitle = container.querySelector("img").getAttribute("data-video-title");
+          playVideoInEmbeddedPlayer(videoId, videoTitle);
+        });
+      });
+    };
+
+    function playVideoInEmbeddedPlayer(videoId, videoTitle) {
+      const youtubePlayer = document.getElementById("youtube-player");
+      youtubePlayer.innerHTML = `
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+          title="${videoTitle}"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      `;
+    } 
+
+    // Fetch related videos when the page loads
+    const movieTitle = '<%= @movie.title %>';
+    searchRelatedVideos(movieTitle);
+
+    document.querySelector('.youtube-trailer-results').addEventListener('click', (event) => {
+      const targetImage = event.target.closest('.image_trailer');
+      if (targetImage) {
+        const videoId = targetImage.getAttribute('data-video-id');
+        const videoTitle = targetImage.getAttribute('data-video-title');
+        playVideoInEmbeddedPlayer(videoId, videoTitle);
+      }
+    });
+  });
+</script>
+  
