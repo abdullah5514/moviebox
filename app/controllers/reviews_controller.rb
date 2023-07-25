@@ -3,8 +3,9 @@ class ReviewsController < ApplicationController
 
   def create
     @review = @movie.reviews.new(review_params)
+    @review.user = current_user # Associate the review with the current user
+
     if @review.save
-      # redirect_to @movie, notice: 'Review was successfully added.'
       redirect_back(fallback_location: @movie)
     else
       render 'movies/show'

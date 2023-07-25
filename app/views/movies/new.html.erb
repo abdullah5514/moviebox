@@ -28,8 +28,15 @@
       <%= form.text_field :trailer_url, class: 'form-control' %>
 
       <!-- Embedded YouTube Player -->
-      <div id="youtube-player" class="mt-4"></div>
+      <div id="youtube-player" class="mt-4">
+        
+      </div>
       <button id="add-video-link-btn" class="btn btn-primary mt-2">Add Video Link</button>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :trailer, class: 'form-label' %>
+      <%= form.file_field :trailer, class: 'form-control' %>
     </div>
 
     <div class="col-12">
@@ -42,18 +49,16 @@
       <%= form.text_area :description, class: 'form-control' %>
     </div>
 
+    <div class="col-12">
+      <%= form.hidden_field :tmdb_rating, class: 'form-control' %>
+    </div>
+
     <div class="col-12 text-center"> <!-- Center align the buttons -->
       <%= form.submit 'Create Movie', class: 'btn btn-primary mr-2' %>
       <%= link_to 'Back', movies_path, class: 'btn btn-secondary' %>
     </div>
   <% end %>
 </div>
-
-  <div class="container">
-  <h1 class="mb-4">New Movie</h1>
-  <%= form_with(model: @movie, url: movies_path, local: true, html: { class: 'row g-3' }) do |form| %>
-    <!-- ... (existing form fields) ... -->
-  <% end %>
 
 <div class="youtube-trailer-search mt-4">
   <h2>Search for YouTube Trailer</h2>
@@ -62,7 +67,6 @@
     <button type="button" id="youtube-search-btn" class="btn btn-primary">Search</button>
   </div>
   <div class="youtube-trailer-results mt-4 d-flex flex-nowrap overflow-auto">
-    <!-- Thumbnails will be added here -->
   </div>
 </div>
 </div>

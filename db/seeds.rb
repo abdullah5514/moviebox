@@ -33,6 +33,7 @@ user.role << user_role
     created_at: Time.now - rand(1..30).days,
     updated_at: Time.now - rand(1..30).days,
     poster_url: "https://images.pexels.com/photos/2873486/pexels-photo-2873486.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    trailer_url: nil
+    trailer_url: nil,
+    user_id: User.first.id
   })
 end

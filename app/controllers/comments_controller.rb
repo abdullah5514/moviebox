@@ -3,6 +3,9 @@ class CommentsController < ApplicationController
 
   def create
     @comment = @movie.comments.new(comment_params)
+    
+    @comment.user = current_user # Associate the comment with the current user
+
     if @comment.save
       redirect_to @movie, notice: 'Comment was successfully added.'
     else

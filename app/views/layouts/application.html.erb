@@ -6,29 +6,6 @@
   <%= csp_meta_tag %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <style>
-    /* Set a minimum height for the main container to prevent the footer from moving */
-    body {
-      min-height: calc(100vh - 110px); /* Adjust as needed based on your footer height */
-    }
-
-    /* Style the navigation links */
-    .navbar-nav li {
-      margin-right: 10px;
-      list-style: none;
-      display: inline-block;
-    }
-
-    .navbar-nav li a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .navbar-nav li a:hover {
-      color: #f0f0f0;
-    }
-  </style>
 </head>
 <body>
   <header class="navbar navbar-dark bg-dark">
@@ -45,18 +22,18 @@
         <% else %>
           <li class="nav-item">
             <%= link_to "Login", new_user_session_path, class: "nav-link" %>
-            <%= link_to "Sign up", user_registration_path , class: "nav-link" %>
+            <%= link_to "Sign up", new_user_registration_path , class: "nav-link" %>
           </li>
         <% end %>
       </ul>
     </div>
   </header>
 
-  <main class="container mt-4">
+  <main class="container mt-4 pb-5">
     <%= yield %>
   </main>
 
-  <footer class="bg-dark text-white text-center py-3 mt-4">
+  <footer class="bg-dark text-white text-center py-1 mt-15 fixed-bottom">
     &copy; <%= Time.now.year %> MovieBox. All rights reserved.
   </footer>
 
