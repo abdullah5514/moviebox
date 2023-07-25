@@ -59,10 +59,12 @@
           <h5 class="card-title"><%= movie.title %></h5>
           <p class="card-text"><%= movie.description %></p>
           <p class="card-text"><small class="text-muted"><%= movie.release_date %></small></p>
-          <!-- Edit Button -->
-          <a href="<%= edit_movie_path(movie) %>" class="btn btn-primary mr-2">Edit</a>
-          <!-- Show Button -->
-          <a href=<%= movie_path(movie) %> class="btn btn-info">Show</a>
+          <% if can? :new, @movie %>
+            <!-- Edit Button -->
+            <a href="<%= edit_movie_path(movie) %>" class="btn btn-primary mr-2">Edit</a>
+            <% end %>
+            <!-- Show Button -->
+            <a href=<%= movie_path(movie) %> class="btn btn-info">Show</a>
         </div>
       </div>
     <% end %>
