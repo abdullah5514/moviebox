@@ -12,12 +12,16 @@ end
 
 admin_user = User.create(
   email: 'john@example.com',
-  password: '12344567'
+  password: '12344567',
+  image: Faker::Avatar,
+  name: Faker::Name.name
 )
 
 user =User.create(
   email: 'jane@example.com',
-  password: '1234567'
+  password: '1234567',
+  image: Faker::Avatar,
+  name: Faker::Name.name
 )
 admin_role = Role.create(role_type: "admin")
 user_role  = Role.create(role_type: "user")
@@ -29,7 +33,7 @@ user.role << user_role
   Movie.create!({
     title: Faker::Movie.unique.title,
     release_date: random_future_date,
-    description: "ioj",
+    description: description = Faker::Lorem.sentences(number: 3).join(' '),
     created_at: Time.now - rand(1..30).days,
     updated_at: Time.now - rand(1..30).days,
     poster_url: "https://images.pexels.com/photos/2873486/pexels-photo-2873486.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",

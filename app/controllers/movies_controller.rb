@@ -1,4 +1,6 @@
 class MoviesController < ApplicationController
+  rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
+
   def index
     @movies = Movie.all
     @tmdb_movies = MovieService.new.discover_movies
@@ -6,6 +8,7 @@ class MoviesController < ApplicationController
 
   def show
     @movie = Movie.find(params[:id])
+    # @movie_details = MovieService.new.fetch_movie_from_api()
   end
 
   def new
@@ -71,6 +74,13 @@ class MoviesController < ApplicationController
 
   private
 
+  def handle_record_invalid(exception)
+    # Optionally, log the exception for further investigation
+    Rails.logger.error("RecordInvalid Exception: #{exception.message}")
+
+    # Redirect to the custom error page (500.html) without displaying specific error details
+    redirect_to '/errors/500', alert: 'An error occurred. Please try again later.'
+  end
   def movie_params
     params.require(:movie).permit(:title, :release_date, :description, :poster, :trailer, :poster_url, :tmdb_rating, :moviebox_rating, :trailer_url)
   end
