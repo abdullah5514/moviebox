@@ -1,20 +1,21 @@
 MovieBox 
 
-MovieBox is a Rails application that allows users to explore movie data from the IMDb API and create local movie objects. It utilizes Docker for containerization, making it easy to set up and deploy. 
-
+MovieBox is a web application built using the Ruby on Rails framework, providing users with a platform to explore movie data from two sources - the TMDB API and the local MovieBox rating system. With the use of Docker for containerization, the application is designed for easy setup and deployment
 Features 
 
-Explore movie data from the IMDb API. 
+Explore movie data from the TMDB API.  link = https://developer.themoviedb.org/reference/movie-details
 
 Create and manage local movie objects with custom attributes. 
 
 Use Docker to run the application in a containerized environment. 
 
-Prerequisites 
+Prerequisites      
 
 Before running the application, ensure you have the following installed: 
 
-Docker: Official Website 
+Docker: Official Website or you can use =  https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+
+add file with name "development.key" in credential folder
 
 Installation and Usage 
 
@@ -32,6 +33,9 @@ bashCopy code
 cd moviebox 
  
 
+
+
+
 Build the Docker image: 
 
 docker-compose up -d && docker-compose run rails rails db:create && docker-compose run rails rails db:migrate && docker-compose run rails rails db:seed
@@ -39,7 +43,7 @@ docker-compose up -d && docker-compose run rails rails db:create && docker-compo
 
 Access the application: 
 
-Open your web browser and go to http://localhost:3000. 
+Open your web browser and go to  http://0.0.0.0:3000 
 
 Configuration 
 
@@ -56,8 +60,7 @@ The MovieBox application is open-source and available under the MIT License.
 Acknowledgments 
 
 This project was inspired by our love for movies and the desire to learn Ruby on Rails. 
-
-Special thanks to OpenAI for providing valuable knowledge resources. 
+ 
 
 Contact 
 
