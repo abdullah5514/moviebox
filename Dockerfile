@@ -16,6 +16,10 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update -qq && apt-get install -y yarn
 
+# Install the `netcat` package
+RUN apt-get update && apt-get install -y netcat
+
+
 # Install bundler
 RUN gem install bundler
 
@@ -33,6 +37,14 @@ COPY . .
 
 # Set the Rails environment to production
 ENV RAILS_ENV development
+
+# Copy the entrypoint script into the container
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+
+# Start the Rails server using the entrypoint script
+ENTRYPOINT ["entrypoint.sh"]
+
 
 # Start the Rails server
 CMD ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
