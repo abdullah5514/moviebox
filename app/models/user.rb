@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :movies
   has_many :comments, dependent: :destroy
   has_one :reviews, dependent: :destroy
+  after_initialize :set_default_role, if: :new_record?
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -10,6 +11,14 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one_attached :profile_picture
+
+  
+  
+
+  def set_default_role
+    user_role = Role.find_by(role_type: 'user')
+    self.role <<  user_role
+  end
   
   def admin?
     role.where(role_type: 'admin').present?

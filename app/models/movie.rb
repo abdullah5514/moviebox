@@ -6,7 +6,7 @@ class Movie < ApplicationRecord
   has_many :reviews, dependent: :destroy
 
   has_one_attached :poster
-  has_one_attached :trailer
+
 
   validates :title, presence: true, uniqueness: true
   validates :release_date, presence: true
