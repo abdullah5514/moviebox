@@ -1,6 +1,6 @@
 <div class="container">
   <h1 class="mb-4">New Movie</h1>
-  <%= form_with(model: @movie, url: movies_path, local: true, html: { class: 'row g-3' }) do |form| %>
+  <%= form_with(model: @movie, url: movies_path, remote: true, html: { class: 'row g-3' }) do |form| %>
     <div class="col-md-6">
       <%= form.label :title, class: 'form-label' %>
       <%= form.text_field :title, class: 'form-control' %>
@@ -23,10 +23,21 @@
       <%= form.text_field :poster_url, class: 'form-control' %>
     </div>
 
+    <%= form.hidden_field :tmdb_id, class: 'form-control' %>
+
     <div class="col-12">
       <%= form.label :trailer_url, class: 'form-label' %>
       <%= form.text_field :trailer_url, class: 'form-control' %>
 
+      <div class="youtube-trailer-search mt-4">
+        <h2>Search for YouTube Trailer</h2>
+        <div class="input-group">
+          <input type="text" id="youtube-search-query" class="form-control" placeholder="Enter movie name...">
+          <button type="button" id="youtube-search-btn" class="btn btn-primary">Search</button>
+        </div>
+        <div class="youtube-trailer-results mt-4 d-flex flex-nowrap overflow-auto">
+        </div>
+      </div>
       <!-- Embedded YouTube Player -->
       <div id="youtube-player" class="mt-4">
         
@@ -57,19 +68,12 @@
   <% end %>
 </div>
 
-<div class="youtube-trailer-search mt-4">
-  <h2>Search for YouTube Trailer</h2>
-  <div class="input-group">
-    <input type="text" id="youtube-search-query" class="form-control" placeholder="Enter movie name...">
-    <button type="button" id="youtube-search-btn" class="btn btn-primary">Search</button>
-  </div>
-  <div class="youtube-trailer-results mt-4 d-flex flex-nowrap overflow-auto">
-  </div>
-</div>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+     const toggleButton = document.getElementById("add-video-link-btn");
+     toggleButton.style.display = "none";
     const movieTitle = document.getElementById("movie_title").value.trim();
     
     // If the movie title exists, call the search function with the title
@@ -116,7 +120,6 @@
             </div>
           </div>
         `;
-
         youtubeTrailerResults.insertAdjacentHTML("beforeend", trailerItem);
       });
 
@@ -130,6 +133,7 @@
           const videoId = container.querySelector("img").getAttribute("data-video-id");
           const videoTitle = container.querySelector("img").getAttribute("data-video-title");
           playVideoInEmbeddedPlayer(videoId, videoTitle);
+          toggleButton.style.display = "block";
         });
       });
     }

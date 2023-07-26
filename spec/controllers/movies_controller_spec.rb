@@ -5,7 +5,7 @@ RSpec.describe MoviesController, type: :controller do
   describe 'GET #index' do
     it 'assigns all movies and TMDB movies' do
       movies = create_list(:movie, 5, :with_random_poster_or_url , has_poster: true)
-      allow_any_instance_of(MovieService).to receive(:discover_movies).and_return([])
+      allow_any_instance_of(TMDB::MovieService).to receive(:discover_movies).and_return([])
 
 
       get :index

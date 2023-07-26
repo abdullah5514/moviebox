@@ -2,12 +2,13 @@ class ReviewsController < ApplicationController
   before_action :set_movie
 
   def create
-    @review = @movie.reviews.new(review_params)
+    @review = @movie.reviews.create(review_params)
     @review.user = current_user # Associate the review with the current user
 
-    if @review.save!
-      redirect_back(fallback_location: @movie)
+    if @review.save
+      redirect_to @movie
     else
+      flash.now[:error] = @review.errors.full_messages.to_sentence
       render 'movies/show'
     end
   end

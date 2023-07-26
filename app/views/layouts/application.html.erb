@@ -9,8 +9,13 @@
   <%= javascript_importmap_tags 'application' %>
 </head>
 <body>
+  <% flash.each do |type, message| %>
+    <div class="alert alert-info mb-0" id="flash-message">
+        <%= message %>
+    </div>
+  <% end %>
   <header class="navbar navbar-dark bg-dark">
-    <div class="container d-flex justify-content-between align-items-center">
+    <div class="container d-flex justify-content-between align-items-center p-0">
       <a class="navbar-brand" href=<%= root_path %>>
         <span style="font-size: 40px; font-weight: bold; color: mediumaquamarine">MovieBox</span>
       </a>

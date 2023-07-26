@@ -28,9 +28,9 @@
       <!-- Movie description -->
       <p><strong>Description:</strong> <%= @movie.description %></p>
       <!-- Show comment -->
-      <p><strong>Rating on TMDB:</strong> <%= @movie.tmdb_rating || 0%></p>
+      <p><strong>Rating on TMDB:</strong> <%= @movie.tmdb_rating || 'Not Available'%></p>
       <!-- Show Review -->
-      <p><strong>Rating on MovieBox:</strong> <%= @movie.moviebox_rating || 0 %></p>
+      <p><strong>Rating on MovieBox:</strong> <%= @movie.moviebox_rating || 'Not Available' %></p>
       
       <% if current_user.present? %>
       <%= turbo_frame_tag 'comments-form' do %>
@@ -63,7 +63,7 @@
           <div class="card-body pt-4">
             <div class="d-flex flex-start w-100">
             <% if current_user.present? %>
-              <div class="w-100">
+              <div class="w-100" id="reviewFormContainer"> 
                 <%= form_with(model: Review.new, url: movie_reviews_path(@movie), data: { controller: 'reviews' }) do |form| %>
                   <h5>Add a review</h5>
                   <ul class="rating mb-3 d-flex p-0">
@@ -82,6 +82,7 @@
                   <div class="d-flex justify-content-end mt-3">
                     <%= form.submit 'Submit', class: 'btn btn-primary mb-4' %>
                   </div>
+                  <div id="validationMessage" class="text-danger"></div>
                 <% end %>
               <% end %>
               </div>
@@ -90,26 +91,28 @@
             </div>
 
             <% @movie.reviews.each do |review| %>
-        <div class="review">
-          <div class="rating">
-            <div class="d-flex flex-row align-items-center">
-                      <% if review.user.profile_picture.attached? %>
-                        <img class="rounded-circle shadow-1-strong" src=<%= url_for(review.user.profile_picture)%> alt="avatar" width="25" height="25"/>
-                      <% end %>
-                      <p class="small mb-0 ms-2 me-2"><%= review.user.name %></p>
-                    </div>
-            <% (1..5).each do |i| %>
+             <%= puts('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%') %>
+            <%= puts(@movie.reviews.count) %>
+              <div class="review">
+                <div class="rating">
+                  <div class="d-flex flex-row align-items-center">
+                            <% if review.user.profile_picture.attached? %>
+                              <img class="rounded-circle shadow-1-strong" src=<%= url_for(review.user.profile_picture)%> alt="avatar" width="25" height="25"/>
+                            <% end %>
+                            <p class="small mb-0 ms-2 me-2"><%= review.user.name %></p>
+                          </div>
+                  <% (1..5).each do |i| %>
 
-              <% if i <= review.rating ||= 1 %>
-                <span class="star highlighted">&#9733;</span>
-              <% else %>
-                <span class="star">&#9734;</span>
-              <% end %>
+                    <% if i <= review.rating ||= 1 %>
+                      <span class="star highlighted">&#9733;</span>
+                    <% else %>
+                      <span class="star">&#9734;</span>
+                    <% end %>
+                  <% end %>
+                </div>
+                <p><%= review.content %></p>
+              </div>
             <% end %>
-          </div>
-          <p><%= review.content %></p>
-        </div>
-      <% end %>
             </div>
           </div>
         </div>
@@ -121,32 +124,30 @@
   </div>
 </div>
 <% end %>
-
-
 <script>
   const stars = document.querySelectorAll(".star");
-
-  stars.forEach((star) => {
+  stars.forEach((star, index) => {
     star.addEventListener("click", function () {
-      const selectedRating = parseInt(star.dataset.rating) ;
-
-      stars.forEach((star, index) => {
-        if (index < selectedRating) {
+      const selectedRating = index + 1; // Add 1 to the index to get the selected rating
+      stars.forEach((star, i) => {
+        if (i < selectedRating) {
           star.classList.add("selected");
         } else {
           star.classList.remove("selected");
         }
       });
+
+      // Send the selectedRating value to the server or perform any action you need
+      console.log("Selected rating:", selectedRating);
     });
   });
 
-  document.querySelector('form[data-controller="reviews"]').addEventListener("submit", function (event) {
-    const selectedRating = parseInt(document.querySelector('input[name="review[rating]"]:checked').value);
-    console.log("============== hereeee----------------", selectedRating)
-    if (!selectedRating || selectedRating === 0) {
-      event.preventDefault(); 
-      alert("Rating cannot be nil or zero. Please select a valid rating.");
+   document.addEventListener('DOMContentLoaded', function() {
+    var flashMessage = document.getElementById('flash-message');
+    if (flashMessage) {
+      setTimeout(function() {
+        flashMessage.style.display = 'none';
+      }, 3000);
     }
   });
 </script>
-

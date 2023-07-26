@@ -1,57 +1,71 @@
-
 <div class="container">
+  <!-- TMDB Movies Section -->
   <div class="row justify-content-center">
     <h1 class="mt-4">Movies from TMDB</h1>
   </div>
   <div class="card-deck mt-4">
-    <% @tmdb_movies.each do |movie| %>
-     <a href="<%= tmdb_show_path(movie) %>" class="card-link">
+    <!-- List TMDB Movies -->
+    <% @tmdb_movies['results'].each do |movie| %>
+      <!-- TMDB Movie Card -->
       <div class="card mb-6 shadow">
-        <img src="<%= 'https://image.tmdb.org/t/p/w500/' + movie['poster_path'] %>" class="card-img-top">
-        <div class="card-body text-center"> <!-- Center align card content -->
-          <h5 class="card-title"><%= movie['title'] %></h5>
-          <p class="card-text"><%= movie['overview'] %></p>
-          <p class="card-text"><small class="text-muted"><%= movie['release_date'] %></small></p>
-          <p class="card-text"><small class="text-muted">TMDB Rating: <%= movie['vote_average'] %></small></p>
-          <% if can? :read, @movie %>
-            <a href=<%= new_movie_path(params: movie) %> class="btn btn-success">Add to MovieBox</a>
-          <% end %>
-          
-
-        </div>
+        <a href="<%= tmdb_show_path(movie) %>" class="card-link">
+          <img src="<%= 'https://image.tmdb.org/t/p/w500/' + movie['poster_path'] %>" class="card-img-top">
+          <div class="card-body text-center">
+            <h5 class="card-title"><%= movie['title'] %></h5>
+            <p class="card-text"><%= movie['overview'] %></p>
+            <p class="card-text"><small class="text-muted"><%= movie['release_date'] %></small></p>
+            <p class="card-text"><small class="text-muted">TMDB Rating: <%= movie['vote_average'] %></small></p>
+            <% if can? :read, @movie %>
+              <a href=<%= new_movie_path(params: movie) %> class="btn btn-success">Add to MovieBox</a>
+            <% end %>
+          </div>
+        </a>
       </div>
     <% end %>
   </div>
+
+  <!-- Pagination Links for @tmdb_movies -->
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      <li class="page-item">
+        <%= link_to 'Previous', movies_path(tmdb_page: @tmdb_movies['page'] - 1,page: @movies.current_page), class: 'page-link' unless @tmdb_movies['page'] == 1 %>
+      </li>
+
+      <% start_page = [@tmdb_movies['page'] - 2, 1].max %>
+      <% end_page = [start_page + 4, @tmdb_movies['total_pages']].min %>
+
+      <% (start_page..end_page).each do |page_number| %>
+        <li class="page-item <%= 'active' if @tmdb_movies['page'] == page_number %>">
+          <%= link_to page_number, movies_path(tmdb_page: page_number,page: @movies.current_page), class: 'page-link' %>
+        </li>
+      <% end %>
+
+      <li class="page-item">
+        <%= link_to 'Next', movies_path(tmdb_page: @tmdb_movies['page'] + 1, page: @movies.current_page), class: 'page-link' unless @tmdb_movies['page'] == @tmdb_movies['total_pages'] %>
+      </li>
     </ul>
   </nav>
+
 </div>
 
 <div class="container">
-  <div class="container">
+  <!-- MovieBox Movies Section -->
   <div class="row justify-content-center mt-4">
     <div class="col-md-6 d-flex align-items-center justify-content-start">
       <h1>Movies from MovieBox</h1>
     </div>
     <div class="col-md-6 d-flex align-items-center justify-content-end">
-     <% if can? :new, @movie %>
-      <a href= <%= new_movie_path %> class="btn btn-success">Create New Movie</a>
-    <% end %>
+      <% if can? :new, @movie %>
+        <a href=<%= new_movie_path %> class="btn btn-success">Create New Movie</a>
+      <% end %>
     </div>
   </div>
-</div>
-  <!-- Create New Movie Button -->
 
+  <!-- List MovieBox Movies -->
   <div class="card-deck mt-4">
     <% @movies.each do |movie| %>
-      <a href=<%= movie_path(movie) %> class="card-link">
         <div class="card mb-6 shadow">
+          <a href=<%= movie_path(movie) %> class="card-link">
           <% if movie.poster.attached? %>
             <img src="<%= url_for(movie.poster) %>" class="card-img-top" alt="...">
           <% else %>
@@ -64,14 +78,32 @@
             <p class="card-text"><small class="text-muted"><%= movie.release_date %></small></p>
             <p class="card-text"><small class="text-muted">MovieBox Rating: <%= movie.moviebox_rating ||= 'Not Available' %></small></p>
             <% if can? :new, @movie %>
-              <!-- Edit Button -->
               <a href="<%= edit_movie_path(movie) %>" class="btn btn-primary mr-2">Edit</a>
-              <% end %>
-              <!-- Show Button -->
-              
+            <% end %>
+            <!-- Show Button -->
+            <!-- ... Your Show button code ... -->
           </div>
+          </a>
         </div>
-        </a>
     <% end %>
   </div>
+
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        <%= link_to 'Previous', movies_path(page: @movies.prev_page, tmdb_page: @tmdb_movies['page']), class: 'page-link' unless @movies.first_page? %>
+      </li>
+
+      <% (1..@movies.total_pages).each do |page_number| %>
+        <li class="page-item">
+          <%= link_to page_number, movies_path(page: page_number, tmdb_page: @tmdb_movies['page']), class: 'page-link' %>
+        </li>
+      <% end %>
+
+      <li class="page-item">
+        <%= link_to 'Next', movies_path(page: @movies.next_page, tmdb_page: @tmdb_movies['page']), class: 'page-link' unless @movies.last_page? %>
+      </li>
+    </ul>
+  </nav>
 </div>

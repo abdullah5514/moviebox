@@ -1,6 +1,7 @@
-class YoutubeApi
-    require 'google/apis/youtube_v3'
 
+module Youtube
+  class Search
+    require 'google/apis/youtube_v3'
     attr_reader :youtube_env, :youtube
 
     def initialize(params)
@@ -16,10 +17,11 @@ class YoutubeApi
     private
 
     def search_api_response
-      max_results = 10
-      youtube.key = 'AIzaSyBOFBRGlgWZ4Fimr-fzGkGieCYYNCzMR9o'
-      youtube.list_searches('snippet', q: @query, max_results: max_results)
+      youtube.key = youtube_env.api_key
+      response = youtube.list_searches('snippet', q: @query, max_results: 10)
     rescue StandardError => e
-      error_handling(e)
+      puts( 'Something went wrong here -> ', e.message )
+      e
     end
   end
+end

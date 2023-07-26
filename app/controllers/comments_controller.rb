@@ -13,6 +13,7 @@ class CommentsController < ApplicationController
         format.turbo_stream { render turbo_stream: turbo_stream.append('comments-list', partial: 'comments/comment', locals: { comment: @comment }) }
       end
     else
+      flash.now[:error] = @review.errors.full_messages.to_sentence
       render 'movies/show'
     end
   end

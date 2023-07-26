@@ -10,9 +10,8 @@ class Movie < ApplicationRecord
 
   validates :title, presence: true, uniqueness: true
   validates :release_date, presence: true
-
-
   validate :validate_poster_or_poster_url_presence
+
   private
 
   def validate_poster_or_poster_url_presence
