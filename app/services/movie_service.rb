@@ -29,5 +29,20 @@ class MovieService
         raise "Failed to fetch movies: #{response.code} - #{response.message}"
       end
     end
+    def fetch_movie_from_api()
+      options = {
+        headers: {
+          'Accept-Language' => 'en-US,en;q=0.9',
+          'Authorization' => "Bearer #{@api_key}",
+          'accept' => 'application/json'
+        }
+      }
+      response = self.class.get("/movie/509635", options)
+      if response.success?
+        response['results']
+      else
+        raise "Failed to fetch movies: #{response.code} - #{response.message}"
+      end
+    end
   end
   
