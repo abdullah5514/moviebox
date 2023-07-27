@@ -69,4 +69,4 @@ This project was inspired by our love for movies and the desire to learn Ruby on
 
 # Contact 
 
-If you have any questions or need further assistance, you can contact us at mabdullah5514@yahoo.com. 
+If you have any questions or need further assistance, you can contact us at mabdullah3833@gmail.com
