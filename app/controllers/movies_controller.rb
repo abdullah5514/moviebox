@@ -13,7 +13,7 @@ class MoviesController < ApplicationController
 
   def new
     if params.present?
-      @movie = Movie.new(movie_params_from_tmdb)
+      @movie = Movie.new(tmdb_url_params)
     else
       @movie = Movie.new
     end
@@ -24,17 +24,14 @@ class MoviesController < ApplicationController
     if @movie.save
       redirect_to @movie, notice: 'Movie was successfully created.'
     else
+      flash.now[:error] = @movie.errors.full_messages.to_sentence
       render :new
     end
   end
 
   def search
     response = Youtube::Search.new(params[:query]).search_api
-    if response.status_code != 200
-      render json: response
-    else
-      render json: {related_movies: load_response_result(response)}
-    end
+    render json: {related_movies: load_response_result(response)}
   end
 
   def tmdb_show
@@ -67,5 +64,9 @@ class MoviesController < ApplicationController
 
   def tmdb_params
     {title: params[:title], description: params['overview'], release_date: params['release_date'], poster_url: "https://image.tmdb.org/t/p/w500#{params['poster_path']}", tmdb_rating: params['vote_average'], trailer_url: params[:trailer_url], tmdb_id: params['id']}
+  end
+
+  def tmdb_url_params
+    {title: params[:title], description: params['overview'], release_date: params['release_date'], poster_url: params['poster_url'] || "https://image.tmdb.org/t/p/w500#{params['poster_path']}", tmdb_rating: params['vote_average'], trailer_url: params[:trailer_url], tmdb_id: params['id']}
   end
 end

@@ -23,7 +23,6 @@ module Tmdb
       response = self.class.get("/movie/#{movie.tmdb_id}", options)
       if response.success?
         movie.update(tmdb_rating: response['vote_average'].round(2))
-        response['results']
       else
         raise "Failed to fetch movies: #{response.code} - #{response.message}"
       end

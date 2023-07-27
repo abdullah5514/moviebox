@@ -1,14 +1,10 @@
+<%= turbo_frame_tag 'form-frame' do %>
 <div class="container">
   <h1 class="mb-4">New Movie</h1>
-  <%= form_with(model: @movie, url: movies_path, remote: true, html: { class: 'row g-3' }) do |form| %>
+  <%= form_with(model: @movie, url: movies_path, local: true, html: { class: 'row g-3' }) do |form| %>
     <div class="col-md-6">
       <%= form.label :title, class: 'form-label' %>
       <%= form.text_field :title, class: 'form-control' %>
-      <% if @movie.errors.any? %>
-        <% @movie.errors.full_messages_for(:title).each do |message| %>
-          <p class="text-danger"><%= message %></p>
-        <% end %>
-      <% end %>
     </div>
 
     <!-- Image Upload -->
@@ -69,7 +65,7 @@
 </div>
 
 </div>
-
+ <% end %>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
      const toggleButton = document.getElementById("add-video-link-btn");
@@ -123,9 +119,6 @@
         youtubeTrailerResults.insertAdjacentHTML("beforeend", trailerItem);
       });
 
-
-
-
       // Add click event listener to the video thumbnails
       const thumbnailItems = document.querySelectorAll(".video-placeholder");
       thumbnailItems.forEach((container) => {
@@ -175,7 +168,6 @@
         console.error("Error extracting YouTube video ID.");
       }
     }
-
 
     // Function to extract the YouTube video ID from the player HTML
     function extractYouTubeVideoId(playerHtml) {

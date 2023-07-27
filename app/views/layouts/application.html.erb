@@ -6,6 +6,7 @@
   <%= csp_meta_tag %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= javascript_importmap_tags 'application' %>
 </head>
 <body>
@@ -42,7 +43,6 @@
   <footer class="bg-dark text-white text-center py-1 mt-15 fixed-bottom">
     &copy; <%= Time.now.year %> MovieBox. All rights reserved.
   </footer>
-
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'review', 'data-turbolinks-track': 'reload' %>
 </body>
 </html>

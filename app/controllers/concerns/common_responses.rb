@@ -23,7 +23,7 @@ module CommonResponses
       title: params[:title],
       description: params['overview'],
       release_date: params['release_date'],
-      poster_url: params['poster_url'],
+      poster_url: "https://image.tmdb.org/t/p/w500#{params['poster_path']}",
       tmdb_rating: params['vote_average'],
       trailer_url: params[:trailer_url],
       tmdb_id: params['tmdb_id']
