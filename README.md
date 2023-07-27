@@ -55,6 +55,16 @@ Access the application:
 
     http://0.0.0.0:3000 
 
+To login as an Admin use these credentials:
+
+    email: john@example.com
+    password: 12344567
+
+To login as normal User use these credentials:
+
+    email: jane@example.com
+    password: 1234567
+
 
 # Contributing 
 
