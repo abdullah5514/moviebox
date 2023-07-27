@@ -9,6 +9,8 @@ MovieBox is a web application built using the Ruby on Rails framework, providing
 
 - Explore movie data and ratings from the [TMDB API](https://developer.themoviedb.org/reference/movie-details).
 
+- Give ratings to movies and add your comments
+
 - Create and manage local movie objects with custom attributes. 
 
 - Use Docker to run the application in a containerized environment. 
