@@ -17,7 +17,9 @@ class User < ApplicationRecord
 
   def set_default_role
     user_role = Role.find_by(role_type: 'user')
-    self.role <<  user_role
+    if user_role.present?
+      self.role <<  user_role
+    end
   end
   
   def admin?
