@@ -14,11 +14,12 @@ class Movie < ApplicationRecord
 
   private
 
+  # validates if poster or poster url is provided and not both are provided together
   def validate_poster_or_poster_url_presence
     if poster.present? && poster_url.present?
-      errors.add(:base, "You can only provide either an uploaded image or an image URL, not both.")
+      errors.add(:base, I18n.t('errors.poster_url_both_provided'))
     elsif poster.blank? && poster_url.blank?
-      errors.add(:base, "Please provide either an uploaded image or an image URL.")
+      errors.add(:base, I18n.t('errors.poster_urls_present'))
     end
   end
 end

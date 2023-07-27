@@ -31,3 +31,13 @@
 
 en:
   hello: "Hello world"
+  movies:
+    created: "Movie was successfully created."
+    updated: "Movie was successfully updated."
+    deleted: "Movie was successfully deleted."
+  comments:
+    created: "Comment was successfully added."
+  errors:
+    poster_url_both_provided: "You can only provide either an uploaded image or an image URL, not both."
+    poster_urls_present: "Please provide either an uploaded image or an image URL."
+    one_review: "You can only submit one review per movie."

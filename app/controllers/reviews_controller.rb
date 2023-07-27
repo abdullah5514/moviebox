@@ -1,6 +1,7 @@
 class ReviewsController < ApplicationController
   before_action :set_movie
 
+  # create a review for a movie by a specific user
   def create
     @review = @movie.reviews.new(review_params)
     @review.user = current_user # Associate the review with the current user
