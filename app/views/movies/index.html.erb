@@ -1,4 +1,3 @@
-<%= turbo_frame_tag 'form-frame' do %>
 <div class="container">
   <!-- TMDB Movies Section -->
   <div class="row justify-content-center">
@@ -9,7 +8,7 @@
     <% @tmdb_movies['results'].each do |movie| %>
       <!-- TMDB Movie Card -->
       <div class="card mb-6 shadow">
-        <a href="<%= tmdb_show_path(movie) %>" class="card-link">
+        <a href="<%= tmdb_show_path(movie) %>" data-turbo="false" class="card-link">
           <img src="<%= 'https://image.tmdb.org/t/p/w500/' + movie['poster_path'] %>" class="card-img-top">
           <div class="card-body text-center">
             <h5 class="card-title"><%= movie['title'] %></h5>
@@ -17,7 +16,7 @@
             <p class="card-text"><small class="text-muted"><%= movie['release_date'] %></small></p>
             <p class="card-text"><small class="text-muted">TMDB Rating: <%= movie['vote_average'] %></small></p>
             <% if can? :read, @movie %>
-              <a href=<%= new_movie_path(params: movie) %> class="btn btn-success">Add to MovieBox</a>
+              <a href=<%= new_movie_path(params: movie)%> data-turbo="false" class="btn btn-success">Add to MovieBox</a>
             <% end %>
           </div>
         </a>
@@ -57,7 +56,7 @@
     </div>
     <div class="col-md-6 d-flex align-items-center justify-content-end">
       <% if can? :new, @movie %>
-        <a href=<%= new_movie_path %> class="btn btn-success">Create New Movie</a>
+        <a href=<%= new_movie_path %> data-turbo="false" class="btn btn-success">Create New Movie</a>
       <% end %>
     </div>
   </div>
@@ -66,7 +65,7 @@
   <div class="card-deck mt-4">
     <% @movies.each do |movie| %>
         <div class="card mb-6 shadow">
-          <a href=<%= movie_path(movie) %> class="card-link">
+          <a href=<%= movie_path(movie) %>  data-turbo="false" class="card-link">
           <% if movie.poster.attached? %>
             <img src="<%= url_for(movie.poster) %>" class="card-img-top" alt="...">
           <% else %>
@@ -108,4 +107,3 @@
     </ul>
   </nav>
 </div>
-<% end %>

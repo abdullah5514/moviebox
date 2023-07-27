@@ -33,7 +33,7 @@
         <div id="youtube-player" class="mt-4"></div>
 
         <% if can? :read, @movie %>
-          <a href=<%= new_movie_path(params: @movie.attributes) %> class="btn btn-success">Add to MovieBox</a>
+          <a href=<%= new_movie_path(params: @movie.attributes) %> data-turbo="false" class="btn btn-success">Add to MovieBox</a>
         <% end %>
       </div>
     </div>
