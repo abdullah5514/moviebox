@@ -3,7 +3,7 @@ class MoviesController < ApplicationController
 
   # show movies from local db and from TMDB
   def index
-    @movies = Movie.page(params[:page]).per(10)
+    @movies = Movie.order(created_at: :desc).page(params[:page]).per(10)
     @tmdb_movies = Tmdb::MovieService.new(params[:tmdb_page]).discover_movies 
   end
 
@@ -24,11 +24,11 @@ class MoviesController < ApplicationController
 
   def create
     @movie = current_user.movies.new(movie_params)
-    if @movie.save!
+    if @movie.save
       redirect_to @movie, notice: I18n.t('movies.created')
     else
-      flash.now[:error] = @movie.errors.full_messages.to_sentence
-      render :new
+      flash[:error] = @movie.errors.full_messages.to_sentence
+      redirect_back(fallback_location: @movie)
     end
   end
 

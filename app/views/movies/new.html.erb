@@ -3,7 +3,7 @@
 <% end %>
 <div class="container">
   <h1 class="mb-4">New Movie</h1>
-  <%= form_with(model: @movie, url: movies_path, local: true, html: { class: 'row g-3' }) do |form| %>
+  <%= form_with(model: @movie, url: movies_path, html: { class: 'row g-3' }) do |form| %>
     <div class="col-md-6">
       <%= form.label :title, class: 'form-label' %>
       <%= form.text_field :title, class: 'form-control' %>
@@ -56,6 +56,20 @@
     <div class="col-12">
       <%= form.hidden_field :tmdb_rating, class: 'form-control' %>
     </div>
+
+
+    <% if @movie.errors.any? %>
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">Validation Error!</h4>
+          <ul>
+            <% @movie.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
 
     <div class="col-12 text-center"> <!-- Center align the buttons -->
       <%= form.submit 'Create Movie', class: 'btn btn-primary mr-2' %>
