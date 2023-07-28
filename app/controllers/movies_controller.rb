@@ -15,7 +15,7 @@ class MoviesController < ApplicationController
   end
 
   def new
-    if params.present?
+    if params[:title].present?
       @movie = Movie.new(tmdb_url_params)
     else
       @movie = Movie.new
